@@ -6,8 +6,8 @@ rebuild:
 
 # 1st: run this 
 install-host:
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    sudo sh get-docker.sh
+	curl -fsSL https://get.docker.com -o get-docker.sh
+	sudo sh get-docker.sh
 
 	sudo usermod -aG docker user
 	sudo sysctl -w fs.inotify.max_user_watches=12288
