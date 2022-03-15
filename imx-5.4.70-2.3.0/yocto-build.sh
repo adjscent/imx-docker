@@ -26,6 +26,12 @@ repo sync -j16
 
 EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-release.sh -b build_${DISTRO}
 
+# new additions
+
+cp -fr $SCRIPTPATH/meta-mylayer/ ${YOCTO_DIR}/sources/meta-mylayer
+
+bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-mylayer
+
 # Build
 
 bitbake ${IMAGES}
