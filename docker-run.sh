@@ -21,9 +21,9 @@
 # to run yocto-build script inside container
 #
 
-# source the common variables
-currentdirectory=$(dirname $1)
-. $currentdirectory/env.sh
+SCRIPT=$(realpath $1)
+SCRIPTPATH=$(dirname $SCRIPT)
+. $SCRIPTPATH/env.sh
 
 # run the docker image
 docker run -it --rm \

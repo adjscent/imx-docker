@@ -1,0 +1,10 @@
+[Unit]
+Description=3G/4G/5G Modem Service
+[Service]
+Type=simple
+Restart=on-failure
+User=root
+RestartSec=5s
+ExecStart=/usr/bin/umtskeeper --sakisoperators "USBINTERFACE='2' OTHER='USBMODEM' USBMODEM='2c7c:0800' APN=' ' CUSTOM_APN=' ' APN_USER=' ' APN_PASS=' '" --sakisswitches "--sudo --console" --devicename 'Quectel' --log --silent --nat 'no' --temppath '/run/'
+[Install]
+WantedBy=multi-user.target

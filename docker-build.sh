@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # This script creates the yocto-ready docker image.
 # The --build-arg options are used to pass data about the current user.
 # Also, a tag is used for easy identification of the generated image.
 #
 
-# source the common variables
-. ./env.sh
+DOCKER_IMAGE_TAG="imx-yocto"
+DOCKER_WORKDIR="/opt/yocto"
 
 usage() {
     echo -e "\e[3m\nUsage: $0 [path_to_Dockerfile]\e[0m\n"
