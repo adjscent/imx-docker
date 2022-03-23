@@ -16,9 +16,9 @@ cd ${YOCTO_DIR}
 # Init
 if [ ! -f "imx-setup-release.sh" ]; then
     repo init \
-    -u ${REMOTE} \
-    -b ${BRANCH} \
-    -m ${MANIFEST}
+        -u ${REMOTE} \
+        -b ${BRANCH} \
+        -m ${MANIFEST}
 
     repo sync -j16
 fi
@@ -27,7 +27,7 @@ EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-release.sh -b bu
 
 # Build
 rm -fr ${YOCTO_DIR}/sources/meta-hoshiboshi
-cp -fr ${SCRIPTPATH}/meta-hoshiboshi/ ${YOCTO_DIR}/sources/meta-hoshiboshi
+cp -fr ${SCRIPTPATH}/../meta-hoshiboshi/ ${YOCTO_DIR}/sources/meta-hoshiboshi
 bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-hoshiboshi
 
 bitbake ${IMAGES}

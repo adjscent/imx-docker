@@ -22,13 +22,4 @@ do_install() {
 
          mkdir -p ${D}${sysconfdir}
          install -m 0644 ${S}/files/sakis3g.conf ${D}${sysconfdir}/sakis3g.conf
-        # {
-        #     echo 'USBDRIVER="option"';
-        #     echo 'OTHER="USBMODEM"';
-        #     echo 'USBMODEM=" "';
-        #     echo 'USBINTERFACE="2"';
-        #     echo 'CUSTOM_APN=" "';
-        #     echo 'APN_USER=" "';
-        #     echo 'APN_PASS=" "';
-        # } > /etc/sakis3g.conf
 }

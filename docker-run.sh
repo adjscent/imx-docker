@@ -21,6 +21,7 @@
 # to run yocto-build script inside container
 #
 
+# source the additional script envs
 SCRIPT=$(realpath $1)
 SCRIPTPATH=$(dirname $SCRIPT)
 . $SCRIPTPATH/env.sh
