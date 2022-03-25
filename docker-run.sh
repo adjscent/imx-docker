@@ -28,8 +28,10 @@ SCRIPTPATH=$(dirname $SCRIPT)
 
 # run the docker image
 docker run -it --rm \
+    --user $(id -u):$(id -g) \
     --volume ${HOME}:${HOME} \
     --volume ${DOCKER_WORKDIR}:${DOCKER_WORKDIR} \
     --volume $(pwd)/${IMX_RELEASE}:${DOCKER_WORKDIR}/${IMX_RELEASE} \
+    --volume $(pwd)/meta-hoshiboshi:${DOCKER_WORKDIR}/${IMX_RELEASE}-build/sources/meta-hoshiboshi \
     "${DOCKER_IMAGE_TAG}" \
     $1

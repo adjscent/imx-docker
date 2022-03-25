@@ -31,10 +31,7 @@ BUILDDIR="${YOCTO_DIR}/build_${DISTRO}"
 EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-release.sh -b build_${DISTRO}
 
 # Build
-# rm -fr ${YOCTO_DIR}/sources/meta-hoshiboshi
-# cp -fr ${SCRIPTPATH}/../meta-hoshiboshi/ ${YOCTO_DIR}/sources/meta-hoshiboshi
-# bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-hoshiboshi
-echo "UBOOT_CONFIG = \"sd fspi emmc\"" >>"${BUILDDIR}/conf/local.conf"
+bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-hoshiboshi
 
 # u-boot only
 bitbake -c deploy u-boot-imx
@@ -42,4 +39,8 @@ bitbake -c deploy u-boot-imx
 bitbake -c deploy linux-imx
 # whole image
 # bitbake ${IMAGES}
-echo "WIC Image is here ${BUILDDIR}/tmp/deploy/images/${MACHINE}/${IMAGES}-${MACHINE}.wic.bz2"
+bitbake -c clean hoshiboshi-image
+bitbake -c clean hoshiboshi-image-dev
+bitbake hoshiboshi-image
+bitbake hoshiboshi-image-dev
+echo "WIC Image is here ${BUILDDIR}/tmp/deploy/images/"

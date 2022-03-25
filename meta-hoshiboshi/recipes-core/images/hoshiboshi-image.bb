@@ -5,24 +5,25 @@ LICENSE = "MIT"
 inherit core-image
 
 # Enable EMMC boot
-UBOOT_CONFIG = "sd fspi emmc"
+UBOOT_CONFIG = "emmc"
 
 # Note: Systemd is already enabled
-## Remove python2
-PACKAGE_EXCLUDE_pn-target_image = " python"
+## Remove python2 (does not work)
+# IMAGE_INSTALL_remove += "python "
+# PACKAGE_EXCLUDE_pn-target_image = " python "
+# PNBLACKLIST[python] = "Python2 Not supported by this distro."
 ## Set features
-IMAGE_FEATURES += " ssh-server-openssh tools-debug package-management hwcodecs dev-pkgs "
+IMAGE_FEATURES += " ssh-server-openssh "
 ## Important system packages
-CORE_IMAGE_EXTRA_INSTALL += " inotify-tools ethtool memtester bison libpcap ppp wget curl ca-certificates nano libqmi-utils "
-## Additional system packages
-CORE_IMAGE_EXTRA_INSTALL += " python3-pip tcpdump "
+IMAGE_INSTALL_append += " packagegroup-core-boot zlib "
+IMAGE_INSTALL_append += " git inotify-tools ethtool memtester bison libpcap ppp wget curl ca-certificates nano libqmi tcpdump python3-pip xz socat gawk iperf3"
 # Custom modifications
-CORE_IMAGE_EXTRA_INSTALL += " python-helloworld sakis3g "
+IMAGE_INSTALL_append += " python-helloworld "
 
 # Need this for proper apt-get
 PREFERRED_VERSION_gnupg ?= "2.1.11"
 PACKAGE_CLASSES ?= "package_deb"
-IMAGE_INSTALL_append = " gnupg "
+IMAGE_INSTALL_append += " gnupg "
 
 # Use this to remove old images in deploy
 RM_OLD_IMAGE = "1"
