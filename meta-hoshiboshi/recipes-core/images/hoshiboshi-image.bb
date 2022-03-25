@@ -4,9 +4,6 @@ LICENSE = "MIT"
 
 inherit core-image
 
-# Enable EMMC boot
-UBOOT_CONFIG = "emmc"
-
 # Note: Systemd is already enabled
 ## Remove python2 (does not work)
 # IMAGE_INSTALL_remove += "python "
