@@ -1,12 +1,12 @@
 # IMAGE := imx-5.4.70-2.3.0
-IMAGE := imx-5.10.72-2.2.0
+IMAGE := evk-imx-5.10.72-2.2.0.sh
 
 USER  := $(shell id -nu 1000)
 
 
 # 2nd: run this 
 build:
-	./docker-run.sh ${IMAGE}/yocto-build.sh
+	./docker-run.sh scripts/yocto-build.sh environment/${IMAGE} 
 
 rebuild:
 	./docker-run.sh ${IMAGE}/yocto-rebuild.sh

@@ -3,12 +3,12 @@
 
 # This script mounts the rootfs partition of a wic.xz image. The roofs partition is at partition 2.
 
-if ! command -v losetup > /dev/null ; then
+if ! command -v losetup >/dev/null; then
     echo "ERROR: losetup is missing" >&2
     exit 1
 fi
 
-if ! args=$(getopt -o '' --long 'help,image-file:' -n "$(basename "$0")" -- "$@") ; then
+if ! args=$(getopt -o '' --long 'help,image-file:' -n "$(basename "$0")" -- "$@"); then
     exit 1
 fi
 
@@ -31,7 +31,7 @@ ROOTFS_PARTITION_NUMBER="p2"
 
 eval set -- "${args}"
 unset args
-while true ; do
+while true; do
     case "$1" in
     --help)
         usage
@@ -41,25 +41,31 @@ while true ; do
         IMAGE_FILE="$2"
         shift 2
         ;;
-    --) shift; break;;
-    *) echo "Internal error" >&1 ; exit 3;;
+    --)
+        shift
+        break
+        ;;
+    *)
+        echo "Internal error" >&1
+        exit 3
+        ;;
     esac
 done
 
-if [ -z "${IMAGE_FILE}" ]  ; then
+if [ -z "${IMAGE_FILE}" ]; then
     usage 1>&2
     exit 1
 fi
 
 # Check if image file exists.
-if [ ! -f "${IMAGE_FILE}" ] ; then
+if [ ! -f "${IMAGE_FILE}" ]; then
     echo "ERROR: Image file ${IMAGE_FILE} does not exist." >&2
     exit 1
 fi
 XZ_IMAGE_FILENAME=$(basename "${IMAGE_FILE}")
 
 TMP_DIRECTORY="$(mktemp --tmpdir --directory "$(basename "$0").XXXXX")"
-cleanup_tmp_dir () {
+cleanup_tmp_dir() {
     rm -fr "${TMP_DIRECTORY}"
 }
 
@@ -67,8 +73,8 @@ WIC_IMAGE_FILENAME="${XZ_IMAGE_FILENAME%.xz}"
 TMP_WIC_IMAGE_FILE="${TMP_DIRECTORY}/${WIC_IMAGE_FILENAME}"
 
 # Decompress wic.xz file
-bzcat --decompress --keep --stdout "${IMAGE_FILE}" > "${TMP_WIC_IMAGE_FILE}"
-if [ ! -f "${TMP_WIC_IMAGE_FILE}" ] ; then
+bzcat --decompress --keep --stdout "${IMAGE_FILE}" >"${TMP_WIC_IMAGE_FILE}"
+if [ ! -f "${TMP_WIC_IMAGE_FILE}" ]; then
     echo "ERROR: Temporary .wic image file ${TMP_WIC_IMAGE_FILE} does not exist."
     cleanup_tmp_dir
     exit 1
@@ -76,7 +82,7 @@ fi
 
 # Find the first unused loop device.
 GET_LOOP_DEVICE=$(sudo losetup -f)
-cleanup_loop_device () {
+cleanup_loop_device() {
     sudo losetup -d "${GET_LOOP_DEVICE}"
 }
 
@@ -84,7 +90,7 @@ ROOTFS_IMAGE_PARTITION="${GET_LOOP_DEVICE}${ROOTFS_PARTITION_NUMBER}"
 
 sudo losetup -P "${GET_LOOP_DEVICE}" "${TMP_WIC_IMAGE_FILE}"
 # The partition 3 has the rootfs, check if exists
-if [ ! -b "${ROOTFS_IMAGE_PARTITION}" ] ; then
+if [ ! -b "${ROOTFS_IMAGE_PARTITION}" ]; then
     echo "ERROR: No partition ${ROOTFS_IMAGE_PARTITION} available..."
     # cleanup_loop_device
     # cleanup_tmp_dir
@@ -99,8 +105,7 @@ sudo mount "${ROOTFS_IMAGE_PARTITION}" "${TMP_ROOTFS_DIRECTORY}"
 
 echo "Go to ${TMP_ROOTFS_DIRECTORY}"
 
-
-cleanup_umount_dir () {
+cleanup_umount_dir() {
     sudo umount "${TMP_ROOTFS_DIRECTORY}"
 }
 

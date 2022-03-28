@@ -1,9 +1,9 @@
 #!/bin/bash -xe
 # This script will run into container
 # source own
-SCRIPT=$(realpath $0)
-SCRIPTPATH=$(dirname $SCRIPT)
-source ${SCRIPTPATH}/env.sh
+SCRIPT=$(realpath $1)
+# SCRIPTPATH=$(dirname $SCRIPT)
+source ${SCRIPT}
 
 # ignore color
 git config --global color.ui false
@@ -27,11 +27,14 @@ if [ ! -f "imx-setup-release.sh" ]; then
 fi
 
 BUILDDIR="${YOCTO_DIR}/build_${DISTRO}"
+rm -fr ${YOCTO_DIR}/build_${DISTRO}/conf
 
 EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-release.sh -b build_${DISTRO}
 
 # Build
-echo "UBOOT_CONFIG = \"sd fspi emmc\"" >>"${BUILDDIR}/conf/local.conf"
+echo "UBOOT_CONFIG = \"emmc\"" >>"${BUILDDIR}/conf/local.conf"
+
+bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-hoshiboshi
 
 # u-boot only
 bitbake -c clean u-boot-imx
