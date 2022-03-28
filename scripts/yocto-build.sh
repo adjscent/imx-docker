@@ -44,7 +44,6 @@ bitbake -c deploy u-boot-imx
 # kernel and dtb
 bitbake -c deploy linux-imx
 # whole image
-# bitbake ${IMAGES}
-bitbake -c clean hoshiboshi-image
-bitbake hoshiboshi-image
+bitbake -c clean ${IMAGES}
+bitbake ${IMAGES}
 echo "WIC Image is here ${BUILDDIR}/tmp/deploy/images/"
