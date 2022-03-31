@@ -31,3 +31,8 @@ PACKAGE_IMX_TO_REMOVE:imxgpu3d = ""
 CORE_IMAGE_EXTRA_INSTALL:remove = "${PACKAGE_IMX_TO_REMOVE}"
 
 RM_OLD_IMAGE = "1"
+
+inherit extrausers
+ROOTPASSWORD = "root"
+ROOTUSERNAME = "root"
+EXTRA_USERS_PARAMS = "usermod -p $(openssl passwd ${ROOTPASSWORD}) ${ROOTUSERNAME};"

@@ -13,7 +13,7 @@ inherit core-image
 IMAGE_FEATURES += " ssh-server-openssh "
 ## Important system packages
 IMAGE_INSTALL_append += " packagegroup-core-boot zlib "
-IMAGE_INSTALL_append += " git inotify-tools ethtool memtester bison libpcap ppp wget curl ca-certificates nano libqmi tcpdump python3-pip xz socat gawk iperf3"
+IMAGE_INSTALL_append += " git inotify-tools ethtool memtester bison libpcap ppp wget curl ca-certificates nano libqmi tcpdump python3-pip xz socat gawk iperf3 libpcap "
 # Custom modifications
 IMAGE_INSTALL_append += " python-helloworld "
 
@@ -34,4 +34,4 @@ RM_OLD_IMAGE = "1"
 inherit extrausers
 ROOTPASSWORD = "root"
 ROOTUSERNAME = "root"
-EXTRA_USERS_PARAMS = "usermod -P ${ROOTPASSWORD} ${ROOTUSERNAME};"
+EXTRA_USERS_PARAMS = "usermod -p $(openssl passwd ${ROOTPASSWORD}) ${ROOTUSERNAME};"

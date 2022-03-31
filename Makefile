@@ -1,32 +1,25 @@
-# IMAGE := imx-5.4.70-2.3.0
-IMAGE := evk-imx-5.10.72-2.2.0.sh
+IMAGES = environment
+list: $(IMAGES)/*
 
-USER  := $(shell id -nu 1000)
-
+USER  := $(whoami)
 
 # 2nd: run this 
-build:
-	./docker-run.sh scripts/yocto-build.sh environment/${IMAGE} 
-
-rebuild:
-	./docker-run.sh ${IMAGE}/yocto-rebuild.sh
+build: $(IMAGES)/*
+	./docker-run.sh scripts/yocto-build.sh environment/$^
 
 # 1st: run this 
 install-host:
-	# curl -fsSL https://get.docker.com -o get-docker.sh
-	# sudo sh get-docker.sh
-	# rm get-docker.sh
-
 	sudo usermod -aG docker ${USER}
-	# grep -q -F 'fs.inotify.max_user_watches=1228800' /etc/sysctl.conf
-	# if [ $? -ne 0 ]; then \
-	# 	echo 'fs.inotify.max_user_watches=1228800' | sudo tee -a /etc/sysctl.conf;\
-	# fi
+	grep -q -F 'fs.inotify.max_user_watches=1228800' /etc/sysctl.conf
+	if [ $? -ne 0 ]; then \
+		echo 'fs.inotify.max_user_watches=1228800' | sudo tee -a /etc/sysctl.conf;\
+	fi
 
 	sudo mkdir -p /opt/yocto
 	sudo chown ${USER}:${USER} /opt/yocto
-
+# need this to switch group to docker immediately
 	newgrp docker
+
 	./docker-build.sh Dockerfile-Ubuntu-20.04
 	
 # run this if you screw up
