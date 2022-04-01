@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 # This script will run into container
 # source own
 SCRIPT=$(realpath $1)

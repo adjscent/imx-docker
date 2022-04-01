@@ -17,7 +17,7 @@ mkdir -p ${YOCTO_DIR}
 cd ${YOCTO_DIR}
 
 # Init
-if [ ! -f "imx-setup-release.sh" ]; then
+if [ ! -f "imx-setup-desktop.sh" ]; then
     repo init \
         -u ${REMOTE} \
         -b ${BRANCH} \
@@ -27,15 +27,11 @@ if [ ! -f "imx-setup-release.sh" ]; then
 fi
 
 BUILDDIR="${YOCTO_DIR}/build_${DISTRO}"
+
+# MACHINE="${MACHINE}" DISTRO="${DISTRO}" . setup-environment "build_${DISTRO}"
+# bug in imx-setup-release. remove to reconfigure
 rm -fr ${YOCTO_DIR}/build_${DISTRO}/conf
 
-EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-release.sh -b build_${DISTRO}
+EULA=1 MACHINE="${MACHINE}" DISTRO="${DISTRO}" source imx-setup-desktop.sh -b "build_${DISTRO}"
 
-# Build
-echo "UBOOT_CONFIG = \"emmc\"" >>"${BUILDDIR}/conf/local.conf"
-
-bitbake-layers add-layer ${YOCTO_DIR}/sources/meta-hoshiboshi
-
-# u-boot only
-bitbake -c clean u-boot-imx
-bitbake -c deploy u-boot-imx
+bitbake imx-image-desktop
