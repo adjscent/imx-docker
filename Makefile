@@ -1,12 +1,12 @@
 IMAGEDIR := environment
-USER  := $(whoami)
+USER  := $(shell whoami)
 
 DOCKER_IMAGE_TAG := imx-yocto
 DOCKER_WORKDIR := /opt/yocto
 
 # 2nd: run this 
 build: $(IMAGEDIR)/*
-	./docker-run.sh scripts/yocto-build.sh environment/$^
+	./docker-run.sh scripts/yocto-build.sh $^
 
 build-ubuntu-desktop-evk:
 	./docker-run.sh scripts/yocto-build-ubuntu-desktop.sh scripts/ubuntu-env-evk.sh 
