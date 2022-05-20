@@ -28,9 +28,6 @@ install-host:
 	sudo mkdir -p /opt/yocto
 	sudo chown ${USER}:${USER} /opt/yocto
 	sudo chmod 777 /opt/yocto
-
-# need this to switch group to docker immediately
-	newgrp docker 
 	./docker-build.sh Dockerfile-Ubuntu-20.04
 	
 # run this if you screw up
