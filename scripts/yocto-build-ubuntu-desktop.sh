@@ -5,8 +5,13 @@ SCRIPT=$(realpath $1)
 # SCRIPTPATH=$(dirname $SCRIPT)
 source ${SCRIPT}
 
+# set fake user
+git config --global user.name 'test'
+git config --global user.email '<>'
+
 # ignore color
 git config --global color.ui false
+
 # special github stuff as git:// is no longer supported by github
 git config --global url.https://github.com/.insteadOf git://github.com/
 # faster git
