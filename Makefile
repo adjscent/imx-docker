@@ -7,6 +7,7 @@ DOCKER_WORKDIR := /opt/yocto
 prep:
 	sudo chown ${USER}:${USER} -R /opt/yocto
 	sudo chmod 777 -R /opt/yocto    
+	sudo mkdir -p /opt/yocto/.repo
 
 # 2nd: run this 
 build: prep $(IMAGEDIR)/*
@@ -19,10 +20,10 @@ build-ubuntu-desktop-mek: prep
 	./docker-run.sh scripts/yocto-build-ubuntu-desktop.sh scripts/ubuntu-env-mek.sh 
 
 enter-docker:
-	docker exec -it $(DOCKER_IMAGE_TAG) bash
+	docker run -it $(DOCKER_IMAGE_TAG) bash
 
 # 1st: run this. assumes you have docker.
-install-host:
+install-host: prep
 	echo "you may need to run this again after you login and logout."
 	sudo usermod -aG docker ${USER}
 	# grep -q -F 'fs.inotify.max_user_watches=1228800' /etc/sysctl.conf
@@ -30,9 +31,6 @@ install-host:
 	# 	echo 'fs.inotify.max_user_watches=1228800' | sudo tee -a /etc/sysctl.conf;\
 	# fi
 
-	sudo mkdir -p /opt/yocto
-	sudo chown ${USER}:${USER} -R /opt/yocto
-	sudo chmod 777 -R /opt/yocto
 	./docker-build.sh Dockerfile-Ubuntu-20.04
 	
 # run this if you screw up
@@ -41,6 +39,7 @@ bomb:
 	sudo mkdir -p /opt/yocto/
 	sudo chown ${USER}:${USER} -R /opt/yocto
 	sudo chmod 777 -R /opt/yocto
+	sudo mkdir -p /opt/yocto/.repo
 	
 
 
