@@ -52,6 +52,11 @@ ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
 RUN chmod 755 /usr/local/bin/repo
 
 # Check arguments
+ARG USER \
+host_uid \
+host_gid \
+DOCKER_WORKDIR
+
 RUN \
 if [[ -z "${USER}" ]] ; then echo Error. USER argument not provided ; fi; \
 if [[ -z "${host_gid}" ]] ; then echo Error. host_gid argument not provided ; fi; \
@@ -59,20 +64,17 @@ if [[ -z "${host_uid}" ]] ; then echo Error. host_uid argument not provided ; fi
 if [[ -z "${DOCKER_WORKDIR}" ]] ; then echo Error. DOCKER_WORKDIR argument not provided ; fi;
 
 # Add your user to sudoers to be able to install other packages in the container.
-ARG USER
+
 RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER}
 
 # Set the arguments for host_id and user_id to be able to save the build artifacts
 # outside the container, on host directories, as docker volumes.
-ARG host_uid \
-    host_gid
+
 RUN groupadd -g $host_gid nxp && \
     useradd -g $host_gid -m -s /bin/bash -u $host_uid $USER
 
 # Yocto builds should run as a normal user.
 USER $USER
-
-ARG DOCKER_WORKDIR
 
 WORKDIR ${DOCKER_WORKDIR}
